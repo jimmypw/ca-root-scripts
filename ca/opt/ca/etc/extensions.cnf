@@ -1,0 +1,4 @@
+[adcs-intermediate]
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid
+crlDistributionPoints  = URI:${ENV::CACRLDP1},URI:${ENV::CACRLDP2}

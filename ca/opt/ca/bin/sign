@@ -1,0 +1,63 @@
+#!/bin/bash
+
+. /opt/ca/etc/config
+
+function usage() {
+	echo Usage:
+}
+
+if [ ! -f "${CALOCK}" ]; then
+	echo "CA Not Initialised, aborting."
+	exit 1
+fi
+
+if [ ${1:-'n'} == 'n' ]; then
+	usage
+	exit 1
+fi
+
+if [ ! -f "${1}" ]; then
+	echo "${1} does not exist or is not a file"
+	exit 1
+fi
+
+filename=${1%.*}
+outfile=${filename}.crt
+
+if [ -e "${outfile}" ]; then
+	echo "${outfile} already exists, aborting."
+	exit 1
+fi
+
+serialgen > ${CASERIAL}
+
+echo "You about to sign ${1} with the '${CAEXTENSIONS}' extensions"
+sha2wordlist ${1}
+echo "----------"
+echo "Do you want to proceed? Type 'YES' to continue."
+read response
+if [ "${response}n" != "YESn" ]; then
+	echo "aborting."
+	exit 1
+fi
+openssl req -in ${1} -text -noout | less
+
+echo "Do you want to SIGN this certificate? Type 'YES' to continue."
+read response
+if [ "${response}n" != "YESn" ]; then
+	echo "aborting."
+	exit 1
+fi
+
+
+openssl ca -engine pkcs11 \
+  -keyform engine \
+  -extfile "${OPENSSL_EXTENSIONS_CONF}" \
+  -extensions "${CAEXTENSIONS}" \
+  -batch \
+  -in "${1}" \
+  -out "${outfile}"
+
+openssl x509 -in "${outfile}" -text
+echo "Sha2Wordlist for ${outfile}"
+${CADIR}/bin/sha2wordlist "${outfile}"

@@ -1,0 +1,30 @@
+#set -x
+#set -e
+
+export PKCS11ENGINE="/usr/lib64/engines-1.1/pkcs11.so"
+export PKCS11MODULE="/usr/lib64/pkcs11/opensc-pkcs11.so"
+export CACOUNTRY=GB
+export CANAME="TESTCA ERCA RSA 4096 1903"
+export CAOU="http://pki.some.domain"
+export CAKEYNAME="TESTCA_RSA_1903"
+export CAKEYSIZE=4096
+export SIGNATUREMD=sha256
+export CAEXTENSIONS=${CAEXTENSIONS:-'adcs-intermediate'}
+export CADOMAINSUFFIX="some.domain"
+export CACRLDP1="http://crl1.${CADOMAINSUFFIX}"
+export CACRLDP2="http://crl2.${CADOMAINSUFFIX}"
+
+## Don't edit below
+export CANAMESAFE=$(echo ${CANAME} | sed 's/\ /+/g')
+export CADIR=/opt/ca
+export CACONFIGDIR=${CADIR}/etc
+export OPENSSL_CONF=${CACONFIGDIR}/openssl.cnf
+export OPENSSL_EXTENSIONS_CONF=${CACONFIGDIR}/extensions.cnf
+export CALIBDIR=${CADIR}/lib
+export CALOCK=${CALIBDIR}/calock
+export CASERIAL=${CALIBDIR}/serial
+export CACRLSERIAL=${CALIBDIR}/crlserial
+export CADATABASE=${CALIBDIR}/database
+export CACERTPEM=${CALIBDIR}/${CANAMESAFE}.pem
+export CACERTDER=${CALIBDIR}/${CANAMESAFE}.der
+export CASIGNEDCERTS=${CALIBDIR}/signed

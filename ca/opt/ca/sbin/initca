@@ -1,0 +1,49 @@
+#!/bin/bash
+
+. /opt/ca/etc/config
+
+if [ -f "${CALOCK}" ]; then
+	echo "CA Already Initialised"
+	exit 1
+fi
+
+pkcs11-tool -l -k --key-type rsa:${CAKEYSIZE} -a "${CAKEYNAME}"
+
+openssl req \
+    -new \
+    -x509 \
+    -engine pkcs11 \
+    -key "pkcs11:object=${CAKEYNAME};type=private" \
+    -keyform engine \
+    -out "${CACERTPEM}" \
+    -outform pem \
+    -days 3650 \
+    -set_serial "0x$(serialgen)"
+
+openssl x509 \
+    -in "${CACERTPEM}" \
+    -inform pem \
+    -out "${CACERTDER}" \
+    -outform der
+
+openssl x509 \
+    -in "${CACERTPEM}" \
+    -inform pem \
+    -text \
+    -noout
+
+echo "00" > "${CASERIAL}"
+echo "00" > "${CACRLSERIAL}"
+touch "${CADATABASE}"
+
+if [ ! -d "${CASIGNEDCERTS}" ]; then
+	mkdir "${CASIGNEDCERTS}"
+fi
+
+touch "${CALOCK}"
+echo
+echo "Sha2Wordlist for ${CACERTPEM}"
+${CADIR}/bin/sha2wordlist ${CACERTPEM}
+echo
+echo "Sha2Wordlist for ${CACERTDER}"
+${CADIR}/bin/sha2wordlist ${CACERTDER}

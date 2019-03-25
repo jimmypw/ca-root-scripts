@@ -1,0 +1,79 @@
+#!/bin/bash
+
+. /opt/ca/etc/config
+
+function usage() {
+	echo Usage:
+}
+
+if [ ! -f "${CALOCK}" ]; then
+	echo "CA Not Initialised, aborting."
+	exit 1
+fi
+
+if [ ${1:-'n'} == 'n' ]; then
+	usage
+	exit 1
+fi
+
+if [ ! -f ${1} ]; then
+	echo "${1} does not exist or is not a file"
+	exit 1
+fi
+
+echo "Revoking certificate"
+openssl x509 -in "${1}" -subject -noout
+openssl x509 -in "${1}" -serial -noout
+sha2wordlist "${1}"
+
+echo "Do you want to proceed? Enter 'YES' to continue."
+read response
+if [ "${response}n" != "YESn" ]; then
+	echo "aborting."
+	exit 1
+fi
+
+cat << EOF
+
+Reason for revocation:
+1) unspecified
+2) keyCompromise
+3) CACompromise
+4) affiliationChanged
+5) superseded
+6) cessationOfOperation
+7) certificateHold
+
+EOF
+echo -n "# "
+read reason
+
+case $reason in
+1)
+	reasonstr="unspecified"
+	;;
+2) 
+	reasonstr="keyCompromise"
+	;;
+3) 
+	reasonstr="CACompromise"
+	;;
+4) 
+	reasonstr="affiliationChanged"
+	;;
+5) 
+	reasonstr="superseded"
+	;;
+6)
+	reasonstr="cessationOfOperation"
+	;;
+7)
+	reasonstr="certificateHold"
+	;;
+*)
+	echo "Invalid selection, aborting"
+	exit 1
+	;;
+esac
+
+openssl ca -engine pkcs11 -keyform engine -revoke ${1} -crl_reason "${reasonstr}"

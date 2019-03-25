@@ -1,0 +1,69 @@
+openssl_conf  = openssl_init
+dir           = ${ENV::CADIR}
+caname        = ${ENV::CANAME}
+caou          = ${ENV::CAOU}
+cacountry     = ${ENV::CACOUNTRY}
+cakeyname     = ${ENV::CAKEYNAME}
+signaturemd   = ${ENV::SIGNATUREMD}
+cacert        = ${ENV::CACERTPEM}
+cadatabase    = ${ENV::CADATABASE}
+caserial      = ${ENV::CASERIAL}
+cacrlserial   = ${ENV::CACRLSERIAL}
+casignedcerts = ${ENV::CASIGNEDCERTS}
+pkcs11-engine = ${ENV::PKCS11ENGINE}
+pkcs11-module = ${ENV::PKCS11MODULE}
+
+[openssl_init]
+engines = engine_section
+
+[engine_section]
+pkcs11 = pkcs11_section
+
+[pkcs11_section]
+engine_id    = pkcs11
+dynamic_path = /usr/lib64/engines-1.1/pkcs11.so
+MODULE_PATH  = /usr/lib64/pkcs11/opensc-pkcs11.so
+init         = 0
+
+[req]
+prompt             = no
+distinguished_name = req_dn_section
+x509_extensions    = req_ext_section
+utf8               = yes
+default_md         = ${signaturemd}
+
+[req_dn_section]
+countryName            = ${cacountry}
+organizationalUnitName = ${caou}
+commonName             = ${caname}
+
+[req_ext_section]
+keyUsage               = critical,keyCertSign,digitalSignature,cRLSign
+subjectKeyIdentifier   = hash
+basicConstraints       = critical, CA:true
+
+
+[ca]
+default_ca = CA_cx
+
+[CA_cx]
+certificate      = ${cacert}
+private_key      = pkcs11:object=${cakeyname};type=private
+database         = ${cadatabase}
+serial           = ${caserial}
+crlnumber        = ${cacrlserial}
+new_certs_dir    = ${casignedcerts}
+policy           = policy_any_section
+unique_subject   = yes
+copy_extensions  = copy
+default_days     = 365
+default_md       = ${signaturemd}
+default_crl_days = 365
+
+[policy_any_section]
+countryName            = optional
+stateOrProvinceName    = optional
+organizationName       = optional
+organizationalUnitName = optional
+commonName             = supplied
+emailAddress           = optional
