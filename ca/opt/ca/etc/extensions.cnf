@@ -1,5 +1,6 @@
 [intermediate]
 subjectKeyIdentifier   = hash
-authorityKeyIdentifier = keyid
+authorityKeyIdentifier = keyid:always
 crlDistributionPoints  = URI:${ENV::CACRLDP1},URI:${ENV::CACRLDP2}
+keyUsage               = critical,keyCertSign,digitalSignature,cRLSign
 basicConstraints       = critical,CA:true

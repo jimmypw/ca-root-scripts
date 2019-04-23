@@ -8,12 +8,14 @@ export PKCS11MODULE="/usr/safenet/lunaclient/lib/libCryptoki2_64.so"
 export TOKENLABEL="ERCA"
 export CACOUNTRY="GB"
 export CANAME="TESTCA ERCA RSA 4096 1903"
-export CAOU="http://pki.some.domain"
-export CAKEYNAME="TESTCA_RSA_1903"
-export CAKEYSIZE=4096
-export SIGNATUREMD=sha256
-export CAEXTENSIONS=${CAEXTENSIONS:-'intermediate'}
-export CADOMAINSUFFIX="some.domain"
+export CAOU="http://pki.example.com"
+export CAKEYNAME="TEST_RSA_1903"
+export CAKEYSIZE="4096"
+export SIGNATUREMD="sha512"
+export SIGNDAYS="1825"
+export CRLSIGNDAYS="365"
+export CAEXTENSIONS="${CAEXTENSIONS:-intermediate}"
+export CADOMAINSUFFIX="example.com"
 export CACRLDP1="http://crl1.${CADOMAINSUFFIX}"
 export CACRLDP2="http://crl2.${CADOMAINSUFFIX}"
 
@@ -35,10 +37,12 @@ export PKCS11URI="pkcs11:token=${TOKENLABEL};object=${CAKEYNAME};type=private"
 
 if [ "${CONFIGMODIFIED}" == "false" ]
 then
-    echo "You must modify the configuration"
+    echo "You must modify the configuration"#
+    exit 1
 fi
 
-echo "Enter the channelge password for: ${TOKENLABEL}"
+echo "Enter the challenge password for: ${TOKENLABEL}"
 echo -n ": "
 read -s CHALLENGEPW
 export CHALLENGEPW
+echo
