@@ -1,4 +1,5 @@
-[adcs-intermediate]
+[intermediate]
 subjectKeyIdentifier   = hash
 authorityKeyIdentifier = keyid
 crlDistributionPoints  = URI:${ENV::CACRLDP1},URI:${ENV::CACRLDP2}
+basicConstraints       = critical,CA:true

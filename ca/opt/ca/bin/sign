@@ -3,7 +3,8 @@
 . /opt/ca/etc/config
 
 function usage() {
-	echo Usage:
+	echo "Usage: sign request.csr"
+	echo "You are able to sign using alternative extension by using the CAEXTENSIONS ENVVAR"
 }
 
 if [ ! -f "${CALOCK}" ]; then
@@ -60,4 +61,4 @@ openssl ca -engine pkcs11 \
 
 openssl x509 -in "${outfile}" -text
 echo "Sha2Wordlist for ${outfile}"
-${CADIR}/bin/sha2wordlist "${outfile}"
+sha2wordlist "${outfile}"

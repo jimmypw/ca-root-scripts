@@ -2,10 +2,6 @@
 
 . /opt/ca/etc/config
 
-function usage() {
-	echo Usage:
-}
-
 if [ ! -f "${CALOCK}" ]; then
 	echo "CA Not Initialised, aborting."
 	exit 1
