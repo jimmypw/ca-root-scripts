@@ -42,7 +42,7 @@ then
 fi
 
 echo "Enter the challenge password for: ${TOKENLABEL}"
-echo -n ": "
+echo -n "(password hidden): "
 read -s CHALLENGEPW
 export CHALLENGEPW
 echo
