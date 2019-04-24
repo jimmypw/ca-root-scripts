@@ -1,3 +1,6 @@
+# You should not change this file. If you do, be sure to back it up
+# Updating the package will overwrite it.
+
 [intermediate]
 subjectKeyIdentifier   = hash
 authorityKeyIdentifier = keyid:always

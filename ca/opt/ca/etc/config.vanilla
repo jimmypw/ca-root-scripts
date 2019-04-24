@@ -1,7 +1,6 @@
 #set -x
 #set -e
 
-export CONFIGMODIFIED="false"
 export PKCS11ENGINE="/usr/lib64/engines-1.1/pkcs11.so"
 #export PKCS11MODULE="/usr/lib64/pkcs11/opensc-pkcs11.so"
 export PKCS11MODULE="/usr/safenet/lunaclient/lib/libCryptoki2_64.so"
@@ -18,21 +17,22 @@ export CAEXTENSIONS="${CAEXTENSIONS:-intermediate}"
 export CADOMAINSUFFIX="example.com"
 export CACRLDP1="http://crl1.${CADOMAINSUFFIX}"
 export CACRLDP2="http://crl2.${CADOMAINSUFFIX}"
+export CONFIGMODIFIED="false"
 
-## Don't edit below
+## You shouldn't edit below
 export CANAMESAFE=$(echo ${CANAME} | sed 's/\ /+/g')
-export CADIR=/opt/ca
-export CACONFIGDIR=${CADIR}/etc
-export OPENSSL_CONF=${CACONFIGDIR}/openssl.cnf
-export OPENSSL_EXTENSIONS_CONF=${CACONFIGDIR}/extensions.cnf
-export CALIBDIR=${CADIR}/lib
-export CALOCK=${CALIBDIR}/calock
-export CASERIAL=${CALIBDIR}/serial
-export CACRLSERIAL=${CALIBDIR}/crlserial
-export CADATABASE=${CALIBDIR}/database
-export CACERTPEM=${CALIBDIR}/${CANAMESAFE}.pem
-export CACERTDER=${CALIBDIR}/${CANAMESAFE}.der
-export CASIGNEDCERTS=${CALIBDIR}/signed
+export CADIR="/opt/ca"
+export CACONFIGDIR="${CADIR}/etc"
+export OPENSSL_CONF="${CACONFIGDIR}/openssl.cnf"
+export OPENSSL_EXTENSIONS_CONF="${CACONFIGDIR}/extensions.cnf"
+export CALIBDIR="${CADIR}/lib"
+export CALOCK="${CALIBDIR}/calock"
+export CASERIAL="${CALIBDIR}/serial"
+export CACRLSERIAL="${CALIBDIR}/crlserial"
+export CADATABASE="${CALIBDIR}/database"
+export CACERTPEM="${CALIBDIR}/${CANAMESAFE}.pem"
+export CACERTDER="${CALIBDIR}/${CANAMESAFE}.der"
+export CASIGNEDCERTS="${CALIBDIR}/signed"
 export PKCS11URI="pkcs11:token=${TOKENLABEL};object=${CAKEYNAME};type=private"
 
 if [ "${CONFIGMODIFIED}" == "false" ]
