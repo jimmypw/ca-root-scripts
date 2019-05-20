@@ -13,10 +13,10 @@ pkcs11-tool \
     --module "${PKCS11MODULE}" \
     --token "${TOKENLABEL}" \
     -l \
-    --pin "${CHALLENGEPW}" \
+    # --pin "${CHALLENGEPW}" \
     -k \
     --key-type "rsa:${CAKEYSIZE}" \
-    -a "${CAKEYNAME}" \
+    -a "${CAKEYNAME}" 
 
 openssl req \
     -new \
@@ -49,6 +49,15 @@ if [ ! -d "${CASIGNEDCERTS}" ]; then
 	mkdir "${CASIGNEDCERTS}"
 fi
 
+echo "Writing certificate back to HSM"
+pkcs11-tool \
+    --module "${PKCS11MODULE}" \
+    --token "${TOKENLABEL}" \
+    -l \
+    -w "${CACERTDER}" \
+    -y cert \
+    -a "${CAKEYNAME}" 
+
 touch "${CALOCK}"
 echo
 echo "Sha2Wordlist for ${CACERTPEM}"
@@ -56,3 +65,4 @@ sha2wordlist ${CACERTPEM}
 echo
 echo "Sha2Wordlist for ${CACERTDER}"
 sha2wordlist ${CACERTDER}
+
