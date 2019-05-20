@@ -44,8 +44,8 @@ then
     exit 1
 fi
 
-echo "Enter the challenge password for: ${TOKENLABEL}"
-echo -n "(password hidden): "
-read -s CHALLENGEPW
-export CHALLENGEPW
-echo
+# echo "Enter the challenge password for: ${TOKENLABEL}"
+# echo -n "(password hidden): "
+# read -s CHALLENGEPW
+# export CHALLENGEPW
+# echo

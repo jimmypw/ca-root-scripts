@@ -15,7 +15,7 @@ cacrlserial   = ${ENV::CACRLSERIAL}
 casignedcerts = ${ENV::CASIGNEDCERTS}
 pkcs11engine  = ${ENV::PKCS11ENGINE}
 pkcs11module  = ${ENV::PKCS11MODULE}
-challengepw   = ${ENV::CHALLENGEPW}
+# challengepw   = ${ENV::CHALLENGEPW}
 tokenlabel    = ${ENV::TOKENLABEL}
 pkcs11uri     = ${ENV::PKCS11URI}
 signdays      = ${ENV::SIGNDAYS}
@@ -31,7 +31,7 @@ pkcs11 = pkcs11_section
 engine_id    = pkcs11
 dynamic_path = ${pkcs11engine}
 MODULE_PATH  = ${pkcs11module}
-PIN          = ${challengepw}
+# PIN          = ${challengepw}
 init         = 0
 
 [req]
