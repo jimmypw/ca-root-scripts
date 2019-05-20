@@ -13,10 +13,11 @@ pkcs11-tool \
     --module "${PKCS11MODULE}" \
     --token "${TOKENLABEL}" \
     -l \
-    # --pin "${CHALLENGEPW}" \
     -k \
     --key-type "rsa:${CAKEYSIZE}" \
     -a "${CAKEYNAME}" 
+    
+# --pin "${CHALLENGEPW}" \
 
 openssl req \
     -new \
