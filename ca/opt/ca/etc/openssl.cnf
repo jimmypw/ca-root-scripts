@@ -68,6 +68,10 @@ copy_extensions  = copyall
 default_days     = ${signdays}
 default_md       = ${signaturemd}
 default_crl_days = ${crlsigndays}
+crl_extensions   = ca_exts_section
+
+[ca_exts_section]
+authorityKeyIdentifier = keyid:always
 
 [policy_any_section]
 countryName            = optional
