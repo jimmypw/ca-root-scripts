@@ -18,8 +18,6 @@ export SIGNDAYS="1825"
 export CRLSIGNDAYS="90"
 export CAEXTENSIONS="${CAEXTENSIONS:-intermediate}"
 export CADOMAINSUFFIX="example.com"
-export CACRLDP1="http://crl1.${CADOMAINSUFFIX}"
-export CACRLDP2="http://crl2.${CADOMAINSUFFIX}"
 export CONFIGMODIFIED="false"
 
 ## You shouldn't edit below
@@ -37,6 +35,8 @@ export CACERTPEM="${CALIBDIR}/${CANAMESAFE}.pem"
 export CACERTDER="${CALIBDIR}/${CANAMESAFE}.der"
 export CASIGNEDCERTS="${CALIBDIR}/signed"
 export PKCS11URI="pkcs11:token=${TOKENLABEL};object=${CAKEYNAME};type=private"
+export CACRLDP1="http://crl1.${CADOMAINSUFFIX}/${CANAMESAFE}.crl"
+export CACRLDP2="http://crl2.${CADOMAINSUFFIX}/${CANAMESAFE}.crl"
 
 if [ "${CONFIGMODIFIED}" == "false" ]
 then
